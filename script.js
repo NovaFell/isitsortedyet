@@ -4,6 +4,7 @@ function isItSortedYet() {
 	
 	while(isSorted == false) {
 		isSorted = checkIfSorted(array);
+		renderList();
 		document.getElementById("array").innerHTML = array;
 	}
 	if(isSorted == true) {
@@ -18,5 +19,12 @@ function checkIfSorted(array) {
 		}
 	}
 	return true;
+}
+
+function renderList() {
+	let result = "";
+	array.forEach(function (item) {
+		result += "<li>" + item + "</li>";});
+	document.getElementById("table").innerHTML = result;
 }
 
