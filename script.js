@@ -4,12 +4,12 @@ function isItSortedYet() {
 	const array = [4,3,5,2,6,8,7,9,1];
 	let isSorted = false
 	
-	while(isSorted == false) {
+	while(isSorted === false) {
 		isSorted = checkIfSorted(array);
 		renderList(array);
 		document.getElementById("array").innerHTML = array;
 	}
-	if(isSorted == true) {
+	if(isSorted === true) {
 		document.getElementById("answer").innerHTML = "The array is sorted! :D";
 	}
 }
