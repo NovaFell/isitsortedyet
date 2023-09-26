@@ -15,7 +15,9 @@ function isItSortedYet() {
 }
 
 function checkIfSorted(array) {
-	for(int i = 0; i < array.length - 1; i++) {
+	let len = array.length
+
+	for(int i = 0; i < len - 1; i++) {
 		if(array[i] > array[i+1]) {
 			return false;
 		}
@@ -25,7 +27,9 @@ function checkIfSorted(array) {
 
 function renderList(array) {
 	let result = "";
-	for(int i = 0; i < array.length; i++) {
+	let len = array.length
+
+	for(int i = 0; i < len; i++) {
 		result += '<li>' + array[i] + '</li>'
 	}
 	document.getElementById("table").innerHTML = result
