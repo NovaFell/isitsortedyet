@@ -1,3 +1,5 @@
+"use strict";
+
 function isItSortedYet() {
 	const array = [4,3,5,2,6,8,7,9,1];
 	let isSorted = false
