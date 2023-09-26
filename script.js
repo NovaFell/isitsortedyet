@@ -23,8 +23,9 @@ function checkIfSorted(array) {
 
 function renderList(array) {
 	let result = "";
-	array.forEach(function (item) {
-		result += "<li>" + item + "</li>";});
-	document.getElementById("table").innerHTML = result;
+	for(int i = 0; i < array.length; i++) {
+		result += '<li>' + array[i] + '</li>'
+	}
+	document.getElementById("table").innerHTML = result
 }
 
