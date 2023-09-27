@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<title>Is It Sorted Yet?</title>
-		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 	</head>
 	<body>
 		<h1>Is the array sorted yet?</h1>
@@ -17,6 +17,6 @@
 				The chances of this happening are astronomicallylow. You can read more about Solar BitFlips (also known as Single Event Upsets)
 				<a href="https://en.wikipedia.org/wiki/Single-event_upset" target="_blank">here</a></p>
 
-		<script src="script.js"></script>
+		<script src="{{ url_for('static', filename='script.js') }}"></script>
 	</body>
 </html>
