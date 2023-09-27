@@ -1,17 +1,16 @@
 import sqlite3
 from sqlite3 import Error
-import datetime
+from time import sleep
+from datetime import datetime
 
 arr = [4, 3, 5, 2, 6, 8, 7, 9, 1]
 
 def create_connection(db_file):
-    conn = None
     try:
-        conn = sqlite3.connect(db_file)
-        return conn
+        return sqlite3.connect(db_file)
     except Error as e:
         print(e)
-        return conn
+        return None
 
 def create_table(conn):
     try:
@@ -38,39 +37,66 @@ def create_array(conn, created_at, elements):
         print(e)
         return None
 
-def check_for_array(conn, elements):
+def check_for_array(conn):
     try:
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM array_data WHERE elements = ?",
-                       (",".join(map(str, elements)),))
+        cursor.execute("SELECT * FROM array_data")
         result = cursor.fetchone()
-        return result is not None
+        return result
     except Error as e:
         print(e)
-        return False
+        return None
 
 def main():
     database = r".\\backend\\array.db"
 
-    while True:
-        # create a database connection
-        conn = create_connection(database)
-        if conn is not None:
-            create_table(conn)  # Create the table if it doesn't exist
-            
-            # Check if the array already exists in the database
-            if check_for_array(conn, arr):
-                print("Array with the same elements already exists in the database.")
+    # create a database connection or get
+    conn = create_connection(database)
+    if not conn:
+        print("Error connecting to the database")
+        return
+
+    try:
+        # check if previous saved spot exists
+        MEM_ARR = None
+        created_at = None
+        db_arr = check_for_array(conn)
+        if not db_arr:
+            # array does not exist in db create new initial save spot
+            created_at = datetime.now()
+            array_id = create_array(conn, created_at.strftime('%Y-%m-%d %H:%M:%S'), arr)
+            if array_id:
+                print(f"Array inserted at {created_at} with value: {arr}")
+                MEM_ARR = arr
             else:
-                created_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                array_id = create_array(conn, created_at, arr)
+                print("Error inserting array")
+                raise
+        else:
+            # get last saved list from db
+            MEM_ARR = db_arr[2].split(',')
+            created_at = datetime.strptime(db_arr[1], '%Y-%m-%d %H:%M:%S')
+
+        while True:
+            # array exists
+            if ','.join(MEM_ARR) != db_arr[2]:
+                print("BIT FLIP HAPPENED!!")
+                # bit flip happened, save progress
+                created_at = datetime.now()
+                array_id = create_array(conn, created_at.strftime('%Y-%m-%d %H:%M:%S'), MEM_ARR)
                 if array_id:
-                    print(f"Array inserted with ID: {array_id}")
+                    print("progress saved")
                 else:
                     print("Error inserting array")
-            conn.close()
-        else:
-            print("Error connecting to the database")
+                    raise
+            else:
+                print(str(datetime.now()) + " - Array with the same elements, no bitflip yet. time since flip:" + str(datetime.now() - created_at))
+
+            sleep(10)
+    except Error as e:
+        print(e)
+    finally:
+        conn.close()
+
 
 if __name__ == '__main__':
     main()
