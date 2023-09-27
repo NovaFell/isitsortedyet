@@ -7,7 +7,8 @@ function isItSortedYet() {
 	if(isSorted === false) {
 		isSorted = checkIfSorted(array);
 		renderList(array);
-		document.getElementById("array").innerHTML = array;
+		//the line below is not needed, discregards all the work done by renderList
+		//document.getElementById("array").innerHTML = array;
 	}
 	if(isSorted === true) {
 		document.getElementById("answer").innerHTML = "The array is sorted! :D";
